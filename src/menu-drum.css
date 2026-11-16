@@ -1,0 +1,110 @@
+/* Tambor del menú: una lista que rueda dentro de una ventana fija.
+   El renglón que cruza la línea central se enciende en neón. */
+
+/* La sección es alta para darle recorrido al tambor; lo fijo (.pin) lo pone la página. */
+#menu, .drum-host { height: 320vh; height: 320svh; }
+
+/* ── Ventana ── */
+.drum {
+  --drum-tick: 12px;                            /* largo de las dos marcas de la línea central */
+  --drum-gutter: calc(var(--drum-tick) + 10px); /* hueco a cada lado para las marcas */
+  --drum-bleed: min(24px, var(--pad, 18px));    /* aire lateral: el resplandor no se corta */
+  position: relative; width: 100%; height: 36vh; height: 36svh;
+}
+
+/* Línea central: dos marcas finas, una en cada orilla. */
+.drum::before, .drum::after {
+  content: ''; position: absolute; top: calc(50% - 0.5px); z-index: 1; width: var(--drum-tick); height: 1px;
+  background: var(--neon); box-shadow: 0 0 8px rgba(255, 42, 23, 0.8); pointer-events: none;
+}
+.drum::before { left: 0; }
+.drum::after { right: 0; }
+
+/* Lo que se ve: recorta la lista y la desvanece arriba y abajo. */
+.drum-view {
+  position: absolute; inset: 0 calc(var(--drum-bleed) * -1); padding: 0 var(--drum-bleed);
+  overflow: hidden; overflow: clip;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+
+/* La lista entera se mueve con transform (lo pone menuDrum.js). */
+.drum-list {
+  position: relative; margin: 0; padding: 0 var(--drum-gutter); list-style: none;
+  will-change: transform; backface-visibility: hidden;
+}
+
+/* ── Encabezado de grupo ── */
+.drum-head {
+  --d: 4;
+  display: flex; align-items: center; gap: 14px; padding: 2.4em 0 1.2em;
+  font-family: var(--f-mono); font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--brasa);
+  opacity: 0.5;
+  opacity: clamp(0.22, 1.12 - 0.3 * var(--d), 1);
+  transition: opacity 0.4s ease;
+}
+.drum-head::after { content: ''; flex: 1 1 24px; height: 1px; background: var(--linea); }
+
+/* ── Renglón de platillo ── */
+/* --d = renglones de distancia a la línea central (0, 1, 2 …) → opacidad 1 · .42 · .2 · .1 y un poco de escala. */
+.drum-row {
+  --d: 4;
+  display: flex; align-items: center; gap: clamp(10px, 1.1vw, 18px);
+  /* El tope de 12vh solo actúa en pantallas muy bajas (teléfono acostado): sin él cabría un solo renglón. */
+  padding: 0.09em 0; font-size: calc(min(clamp(40px, 9.5vw, 96px), 12vh) * var(--fit, 1));
+  color: var(--hueso);
+  opacity: 0.42;
+  opacity: max(1 - 0.58 * var(--d), 0.64 - 0.22 * var(--d), 0.4 - 0.1 * var(--d), 0.1);
+  transform: scale(calc(1 - 0.03 * min(var(--d), 3)));
+  transform-origin: 0 50%;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.drum-n {
+  flex: none; min-width: 2.6em;
+  font-family: var(--f-mono); font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: 0.22em; font-variant-numeric: tabular-nums;
+  color: var(--hueso-2); transition: color 0.2s ease;
+}
+.drum-name {
+  position: relative; isolation: isolate; /* sus dos sombras (::before / ::after) quedan detrás de su propio texto */
+  flex: none; font-family: var(--f-display); font-weight: 400; line-height: 0.95; letter-spacing: -0.005em;
+  text-transform: uppercase; white-space: nowrap;
+  transition: color 0.2s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Resplandor: dos copias del nombre (data-glow) que solo pintan su sombra, detrás del texto.
+   Lo único que se anima es su opacidad, que la lleva la GPU. Animar text-shadow directamente
+   obligaba al navegador a rehacer el layout y a repintar el nombre en cada cuadro. */
+.drum-name::before, .drum-name::after {
+  content: attr(data-glow);
+  content: attr(data-glow) / ''; /* decorativo: los lectores de pantalla no repiten el nombre */
+  position: absolute; left: 0; top: 0; z-index: -1;
+  color: transparent; opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.drum-name::before { text-shadow: 0 0 24px rgba(255, 42, 23, 0.5); }                                  /* brillo del renglón encendido */
+.drum-name::after { text-shadow: 0 0 24px rgba(255, 42, 23, 0.24), 0 0 70px rgba(255, 42, 23, 0.3); } /* halo que respira */
+
+/* El renglón de la línea central */
+.drum-row.on { color: var(--neon); }
+.drum-row.on .drum-n { color: var(--brasa); }
+.drum-row.on .drum-name { transform: translateX(14px); }
+.drum-row.on .drum-name::before { opacity: 1; }
+/* El halo respira solo con la sección en pantalla (.seen lo pone menuDrum.js) y cuando el renglón
+   ya lleva un momento quieto en el centro. */
+.drum.seen .drum-row.on .drum-name::after { animation: drum-glow 2.8s ease-in-out 0.7s infinite; }
+@keyframes drum-glow { 50% { opacity: 1; } }
+/* En calidad baja (teléfonos) no hay halo: el brillo se queda fijo. */
+html[data-quality='low'] .drum-name::after { content: none; }
+
+/* ── Pantallas anchas ── */
+@media (min-width: 900px) {
+  .drum { --drum-tick: 18px; --drum-gutter: calc(var(--drum-tick) + 14px); height: 44vh; height: 44svh; }
+  .drum-row { font-size: calc(min(clamp(56px, 5.6vw, 110px), 12vh) * var(--fit, 1)); }
+  .drum-n, .drum-head { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drum-head, .drum-row, .drum-n, .drum-name, .drum-name::before { transition: none; }
+  .drum-name::after { content: none; }
+}

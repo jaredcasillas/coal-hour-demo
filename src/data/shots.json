@@ -1,0 +1,42 @@
+{
+  "blackout-l": {
+    "aspect": 1.5052,
+    "depth": true
+  },
+  "blackout-p": {
+    "aspect": 0.8,
+    "depth": true
+  },
+  "chorizo-l": {
+    "aspect": 1.5052,
+    "depth": true
+  },
+  "chorizo-p": {
+    "aspect": 0.8,
+    "depth": true
+  },
+  "field-fire-l": {
+    "aspect": 1.5052,
+    "depth": true
+  },
+  "field-fire-p": {
+    "aspect": 0.8,
+    "depth": true
+  },
+  "steaks-l": {
+    "aspect": 1.5052,
+    "depth": true
+  },
+  "steaks-p": {
+    "aspect": 0.8,
+    "depth": true
+  },
+  "truck-l": {
+    "aspect": 1.5052,
+    "depth": true
+  },
+  "truck-p": {
+    "aspect": 0.8,
+    "depth": true
+  }
+}

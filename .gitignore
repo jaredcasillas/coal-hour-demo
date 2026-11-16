@@ -1,0 +1,9 @@
+node_modules
+dist
+.cache
+*.log
+
+# Locales: skills de terceros y enlace de Netlify
+.claude/
+skills-lock.json
+.netlify/

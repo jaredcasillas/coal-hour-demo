@@ -1,0 +1,34 @@
+/* Efectos de escritorio: cursor de brasa, foto flotante del menú y modo reel. */
+
+/* ── Cursor de brasa ── */
+.ember-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; display: block;
+  pointer-events: none; mix-blend-mode: screen;
+}
+html.ember-cursor, html.ember-cursor * { cursor: none !important; }
+
+/* ── Foto flotante del menú ── */
+.menu-peek {
+  position: fixed; top: 0; left: 0; z-index: 80;
+  width: clamp(250px, 15.6vw, 360px); aspect-ratio: 300 / 380; /* 300 × 380 en 1920 */
+  overflow: hidden; pointer-events: none; visibility: hidden; opacity: 0;
+  border: 1px solid rgba(243, 234, 217, 0.16); border-radius: 0; background: #0b0a09;
+  clip-path: inset(100% 0% 0% 0%);
+  will-change: transform, clip-path; backface-visibility: hidden;
+}
+.menu-peek.is-on { visibility: visible; opacity: 1; }
+.menu-peek img {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  object-fit: cover; opacity: 0; border-radius: 0; user-select: none; will-change: opacity, transform;
+}
+
+/* ── Modo reel: la grabación va limpia ── */
+html.reel, html.reel * { cursor: none !important; }
+html.reel { scrollbar-width: none; -ms-overflow-style: none; }
+html.reel::-webkit-scrollbar, html.reel body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+html.reel .dock, html.reel [data-reel-hide], html.reel .menu-peek, html.reel .ember-canvas {
+  visibility: hidden !important; opacity: 0 !important;
+}
+/* Nada reacciona al puntero quieto mientras la página pasa por debajo. */
+html.reel body, html.reel body * { pointer-events: none !important; }
+html.reel :focus, html.reel :focus-visible { outline: none !important; }

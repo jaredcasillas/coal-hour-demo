@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Coal Hour — Live-fire tacos</title>
+  <meta name="description" content="Coal Hour is a fictional live-fire taco brand. Concept site, not a real restaurant.">
+  <meta name="theme-color" content="#000000">
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div id="loader" role="status" aria-label="Loading"><span class="loader-dot" aria-hidden="true"></span></div>
+
+  <header class="bar">
+    <a class="mono bar-brand" href="#hero" data-c="brand.name" data-hover></a>
+    <p class="mono bar-station" aria-hidden="true"><span id="st-num">01</span><i></i><span id="st-name"></span><i></i><span id="st-clock"></span></p>
+  </header>
+
+  <main id="rail">
+
+    <section id="hero" class="s s-hero" data-station="0">
+      <div class="pin">
+        <p class="mono hero-top" data-fade data-c="hero.label"></p>
+        <h1 class="display hero-title" data-h="hero"></h1>
+        <p class="serif-i hero-lema" data-fade data-c="hero.sub"></p>
+        <p class="mono hero-cue" data-fade><span class="cue"><span data-c="ui.scroll"></span><i></i></span></p>
+      </div>
+    </section>
+
+    <section id="coal" class="s" data-station="1" data-side="left">
+      <div class="pin">
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="coal.label"></p>
+          <h2 class="display temp" data-fade><span id="temp-n">72</span><span class="deg" data-c="coal.unit"></span></h2>
+          <p class="serif-i lead" data-fade data-c="coal.sub"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="grill" class="s s-long" data-station="2" data-side="right">
+      <div class="pin">
+        <div class="marquee" aria-hidden="true"><div class="marquee-track display" id="marquee"></div></div>
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="grill.label"></p>
+          <h2 class="display t-lg" data-split data-h="grill"></h2>
+          <p class="serif-i lead" data-fade data-c="grill.sub"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="taco" class="s" data-station="3" data-side="left">
+      <div class="pin">
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="taco.label"></p>
+          <h2 class="display t-lg" data-split data-h="taco"></h2>
+          <p class="serif-i lead" data-fade data-c="taco.sub"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="s s-menu" data-station="4" data-side="left">
+      <div class="pin">
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="menu.label"></p>
+          <h2 class="display t-md" data-split data-h="menu"></h2>
+          <div id="menu-drum"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="find" class="s s-long" data-station="5" data-side="left">
+      <div class="pin">
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="find.label"></p>
+          <h2 class="display t-lg" data-split data-h="find"></h2>
+          <div class="rows" id="locs"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="s" data-station="6" data-side="right">
+      <div class="pin">
+        <div class="copy">
+          <p class="mono tag" data-fade data-c="events.label"></p>
+          <h2 class="display t-lg" data-split data-h="events"></h2>
+          <p class="serif-i lead" data-fade data-c="events.sub"></p>
+          <a class="btn neon" href="#contact" data-fade data-hover><span data-c="events.cta"></span> <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="s s-end" data-station="7">
+      <div class="pin">
+        <div class="copy end">
+          <p class="mono tag" data-fade data-c="contact.label"></p>
+          <p class="display tel" data-split data-c="brand.phone"></p>
+          <p class="serif-i lead" data-fade data-c="contact.sub"></p>
+          <p class="mono fine" data-fade data-c="ui.footer"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="callouts" id="callouts" aria-hidden="true"></div>
+  <span class="end-dot loader-dot" id="end-dot" aria-hidden="true"></span>
+
+  <nav class="dock" aria-label="Quick actions">
+    <span class="dock-progress" aria-hidden="true"><i id="progress"></i></span>
+    <a class="dock-btn mono" href="#find" data-c="ui.dockA" data-hover></a>
+    <a class="dock-btn dock-cta mono" href="#contact" data-c="ui.dockB" data-hover></a>
+  </nav>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
